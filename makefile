@@ -10,7 +10,7 @@ ASRC = $(wildcard src/*.asm)
 COBJ = $(CSRC:src/%.c=out/%.o)
 AOBJ = $(ASRC:src/%.asm=out/%.o)
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
-	 -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -I $(INC)
+	 -nostartfiles -nodefaultlibs -Wall -Wextra -I $(INC)
 LFLAGS = -melf_i386
 AFLAGS = -f elf32
 

@@ -7,7 +7,7 @@ global outb
 outb:
 	mov al, [esp + 8]
 	mov dx, [esp + 4]
-	out byte dx, al
+	out dx, al
 	ret
 
 global inb
@@ -19,3 +19,16 @@ inb:
 	mov dx, [esp + 4]
 	in al, dx
 	ret
+
+global iowait
+
+; iowait - Forces the CPU to wait for an I/O operation to complete. 
+; only use this when there's nothing like a status register or an IRQ
+; to tell you the info has been received.
+iowait:
+	jmp one
+one:
+	jmp two
+two:
+	ret
+	

@@ -1,19 +1,17 @@
-#include "vga.h"
-#include "casm.h"
+#include "interrupt.h"
 
-void hcf(void) { //Halt And Catch Fire
-
-	for(;;);
-
-}
+//Halt And Catch Fire
+void hcf(void) { for(;;); }
 
 void kernel_main(void) {
 
 	vga_init();
 	vga_clear();
-	vga_write("kernel for all v1");
+	vga_write("kernel for all v1\n");
 
 	gdt_init();
+
+	idt_init();
 
 	hcf();
 
