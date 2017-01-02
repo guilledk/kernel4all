@@ -1,4 +1,5 @@
 #include "vga.h"
+#include "casm.h"
 
 void hcf(void) {
 
