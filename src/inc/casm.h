@@ -3,7 +3,11 @@
 
 #include "types.h"
 
-void outb(u16 port, u8 val);
-void inb(u16 port);
+//IO
+extern void outb(u16 port, u8 val);
+extern void inb(u16 port);
+
+//GDT
+extern void gdt_init(void);
 
 #endif
