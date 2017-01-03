@@ -32,9 +32,9 @@ link: build
 
 geniso: link
 	mkdir -p iso/boot/grub
-	cp stage2_eltorito iso/boot/grub
+	cp grub/stage2_eltorito iso/boot/grub
 	cp $(OUT) iso/boot
-	cp menu.lst iso/boot/grub
+	cp grub/menu.lst iso/boot/grub
 	genisoimage -R \
 		-b boot/grub/stage2_eltorito \
 		-no-emul-boot \

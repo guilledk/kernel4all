@@ -6,6 +6,20 @@ void vga_init(void) {
 	vga_empty = vga_entry(' ', vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK));
 	vga_clear();
 
+	//Disable text mode cursor
+	u8 io_status = inb(0x3CC);
+	if(bit(io_status,0)) {
+		outb(0x3D4,0x0A);
+		iowait();
+		u8 csr = inb(0x3D5);
+		outb(0x3D5, csr | 0b00100000);
+	} else {
+		outb(0x3B4,0x0A);
+		iowait();
+		u8 csr = inb(0x3B5);
+		outb(0x3B5, csr | 0b00100000);
+	}	
+
 }
 
 u8 vga_entry_color(vcolor fg, vcolor bg) {
@@ -64,6 +78,11 @@ void vga_write(const char * str) {
 
 }
 
+void vga_writeln(const char * str) {
+	vga_write(str);
+	vga_newline();
+}
+
 void vga_newline(void) {
 
 	vga_x = 0;
@@ -84,43 +103,54 @@ void vga_newline(void) {
 
 }
 
-void vga_splash(const char * boot_msg) {
+void vga_splash(u8 x, u8 y) {
 
-	u16 empty  = vga_entry(' ',vga_entry_color(VGA_COLOR_BLACK,VGA_COLOR_BLACK));
-	u16 filled = vga_entry(' ',vga_entry_color(VGA_COLOR_WHITE,VGA_COLOR_WHITE));
+	const u16 filled = vga_entry(' ',vga_entry_color(VGA_COLOR_GREEN,VGA_COLOR_GREEN));
 
-	u8 x_offset = (VGA_WIDTH / 2) - 4;
-	u8 y_offset = (VGA_HEIGHT / 2) - 2;
+	vga_putat(filled,x+1,y);
+	vga_putat(filled,x+4,y);
+	vga_putat(filled,x+5,y);
+	vga_putat(filled,x+6,y);
+	vga_putat(filled,x+7,y);
+	vga_putat(filled,x+10,y);
 
-	vga_putat(empty, x_offset + 0, y_offset + 0);
-	vga_putat(filled, x_offset + 1, y_offset + 0);
-	vga_putat(filled, x_offset + 2, y_offset + 0);
-	vga_putat(empty, x_offset + 3, y_offset + 0);
-	vga_putat(filled, x_offset + 4, y_offset + 0);
-	vga_putat(filled, x_offset + 5, y_offset + 0);
-	vga_putat(filled, x_offset + 6, y_offset + 0);
-	vga_putat(empty, x_offset + 7, y_offset + 0);
+	vga_putat(filled,x,y+1);
+	vga_putat(filled,x+3,y+1);
+	vga_putat(filled,x+8,y+1);
+	vga_putat(filled,x+11,y+1);
 
-	vga_putat(empty, x_offset + 0, y_offset + 1);
-	vga_putat(filled, x_offset + 1, y_offset + 1);
-	vga_putat(filled, x_offset + 2, y_offset + 1);
-	vga_putat(empty, x_offset + 3, y_offset + 1);
-	vga_putat(empty, x_offset + 4, y_offset + 1);
-	vga_putat(filled, x_offset + 5, y_offset + 1);
-	vga_putat(filled, x_offset + 6, y_offset + 1);
-	vga_putat(empty, x_offset + 7, y_offset + 1);
+	vga_putat(filled,x+2,y+2);
+	vga_putat(filled,x+9,y+2);
 
-	vga_putat(empty, x_offset + 0, y_offset + 2);
-	vga_putat(filled, x_offset + 1, y_offset + 2);
-	vga_putat(filled, x_offset + 2, y_offset + 2);
-	vga_putat(filled, x_offset + 3, y_offset + 2);
-	vga_putat(empty, x_offset + 4, y_offset + 2);
-	vga_putat(filled, x_offset + 5, y_offset + 2);
-	vga_putat(empty, x_offset + 6, y_offset + 2);
-	vga_putat(empty, x_offset + 7, y_offset + 2);
+	vga_putat(filled,x+1,y+3);
+	vga_putat(filled,x+4,y+3);
+	vga_putat(filled,x+7,y+3);
+	vga_putat(filled,x+10,y+3);
 
-	vga_x = (VGA_WIDTH / 2) - (strlen(boot_msg) / 2);
-	vga_y = (VGA_HEIGHT / 2) + 2;
-	vga_write(boot_msg);
+	vga_putat(filled,x+1,y+4);
+	vga_putat(filled,x+5,y+4);
+	vga_putat(filled,x+6,y+4);
+	vga_putat(filled,x+10,y+4);
+	
+	vga_putat(filled,x+1,y+5);
+	vga_putat(filled,x+4,y+5);
+	vga_putat(filled,x+7,y+5);
+	vga_putat(filled,x+10,y+5);
+
+	vga_putat(filled,x+2,y+6);
+	vga_putat(filled,x+9,y+6);
+
+	vga_putat(filled,x,y+7);
+	vga_putat(filled,x+3,y+7);
+	vga_putat(filled,x+8,y+7);
+	vga_putat(filled,x+11,y+7);
+
+	vga_putat(filled,x+1,y+8);
+	vga_putat(filled,x+4,y+8);
+	vga_putat(filled,x+5,y+8);
+	vga_putat(filled,x+6,y+8);
+	vga_putat(filled,x+7,y+8);
+	vga_putat(filled,x+10,y+8);
+	
 
 }

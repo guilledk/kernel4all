@@ -3,6 +3,7 @@
 
 #include "pic.h"
 #include "memory.h"
+#include "time.h"
 #include "vga.h"
 
 struct idt_entry {

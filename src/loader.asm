@@ -27,5 +27,6 @@ extern kernel_main
 loader:
 	mov esp, kernel_stack + KERNEL_STACK_SIZE ;init stack
 	mov eax, 0xCAFEBABE
-
+	
+	push ebx
 	call kernel_main

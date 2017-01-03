@@ -11,4 +11,10 @@ typedef signed short		i16;
 typedef signed int		i32;
 typedef signed long long	i64;
 
+static inline u8 bit(u32 num, u8 k) {
+
+	return (num >> k) & 1;
+
+}
+
 #endif

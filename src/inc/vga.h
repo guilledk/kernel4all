@@ -2,6 +2,7 @@
 #define _VGA_H_
 
 #include "types.h"
+#include "casm.h"
 #include "string.h"
 
 typedef enum vga_color {
@@ -43,8 +44,9 @@ u16 vga_entry(u8 uchar, u8 ecolor);
 void vga_clear(void);
 void vga_putat(u16 entry, u8 x, u8 y);
 void vga_write(const char * str);
+void vga_writeln(const char * str);
 void vga_newline(void);
 
-void vga_splash(const char * boot_msg);
+void vga_splash(u8 x, u8 y);
 
 #endif
