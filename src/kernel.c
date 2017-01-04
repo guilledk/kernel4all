@@ -53,6 +53,18 @@ void kernel_main(multiboot_info_t * mbd) {
 
 	kb_init();
 
+	paging_init();
+
+	vga_write("kernel end address: ");
+	vga_writehex((u32)&kernel_end_addr,1);
+	vga_newline();
+
+	const char * buf = "TEST TXT";
+	char * ptr = 0x0;
+	memcpy(ptr,buf,9);
+
+	vga_writeln((char*)0x0);
+
 	hcf();
 
 }

@@ -29,4 +29,5 @@ SECTIONS {
 		*(COMMON) /* All COMMON sections from all files */
 		*(.bss) /* All bss sections from all files */
 	}
+	kernel_end_addr = .;
 }

@@ -23,6 +23,13 @@ extern u32 ind(u16 port);
 
 extern void iowait(void);
 
+//MMU
+extern u32 read_cr0(void);
+extern u32 read_cr3(void);
+
+extern void write_cr0(u32 val);
+extern void write_cr3(u32 val);
+
 //GDT
 extern void gdt_init(void);
 
