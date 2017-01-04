@@ -5,10 +5,10 @@ INC = src/inc/
 GCC = i686-elf-gcc
 ASM = nasm
 LDF = link.ld
-CSRC = $(wildcard src/*.c)
-ASRC = $(wildcard src/*.asm)
-COBJ = $(CSRC:src/%.c=out/%.o)
-AOBJ = $(ASRC:src/%.asm=out/%.o)
+CSRC = $(shell find src/ -type f -name '*.c')
+ASRC = $(shell find src/ -type f -name '*.asm')
+COBJ = $(patsubst src/%.c, out/%.o, $(CSRC))
+AOBJ = $(patsubst src/%.asm, out/%.o, $(ASRC))
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
 	 -nostartfiles -nodefaultlibs -Wall -Wextra -I $(INC)
 LFLAGS = -melf_i386
@@ -21,7 +21,7 @@ build:
 	$(foreach SRC, $(CSRC), $(GCC) $(CFLAGS) -c $(SRC) -o $(SRC:src/%.c=out/%.o);)
 	$(foreach SRC, $(ASRC), $(ASM) $(AFLAGS) $(SRC) -o $(SRC:src/%.asm=out/%.o);)
 
-.PHONY: clean link run default geniso
+.PHONY: clean link run default geniso genusb
 
 clean:
 	rm -f out/*.o $(OUT)
@@ -45,6 +45,11 @@ geniso: link
 		-boot-info-table \
 		-o "$(NAME)-v$(VERSION).iso" \
 		iso
+
+genusb: geniso
+	cp grub/grub.cfg iso/boot/grub
+	grub-mkrescue -o "$(NAME)-v$(VERSION)-USB.iso" iso
+	
 
 run: geniso
 	qemu-system-i386 -cdrom "$(NAME)-v$(VERSION).iso"

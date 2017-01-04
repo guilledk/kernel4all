@@ -6,17 +6,33 @@ void vga_init(void) {
 	vga_empty = vga_entry(' ', vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK));
 	vga_clear();
 
-	//Disable text mode cursor
+	/*
+	  Disable text mode cursor
+	  http://www.osdever.net/FreeVGA/vga/crtcreg.htm#0A
+
+	  Read Miscellaneous Output Register (Read at 3CCh, Write at 3C2h)
+	  This bit selects the CRT controller addresses.
+
+	  When set to 0, this bit sets the CRT controller addresses 
+	  to 0x03Bx and the address for the Input Status Register 1
+	  to 0x03BA for compatibility with the monochrome adapter.
+
+	  When set to 1, this bit sets CRT controller addresses to 0x03Dx
+	  and the Input Status Register 1 address to 0x03DA for compatibility
+	  with the color/graphics adapter.
+	*/
 	u8 io_status = inb(0x3CC);
 	if(bit(io_status,0)) {
-		outb(0x3D4,0x0A);
+		outb(0x3D4,0x0A); //Set register index to 0x0A
 		iowait();
-		u8 csr = inb(0x3D5);
-		outb(0x3D5, csr | 0b00100000);
+		u8 csr = inb(0x3D5); //Read previous bit field
+		iowait();
+		outb(0x3D5, csr | 0b00100000); //Set Cursor Disable to true
 	} else {
 		outb(0x3B4,0x0A);
 		iowait();
 		u8 csr = inb(0x3B5);
+		iowait();
 		outb(0x3B5, csr | 0b00100000);
 	}	
 
