@@ -6,3 +6,9 @@ void waitt(u32 t) {
 	while(ticks < future) {}
 	
 }
+
+void waitms(u32 ms) {
+
+	waitt(ms / 10);
+
+}

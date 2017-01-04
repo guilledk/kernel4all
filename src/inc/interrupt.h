@@ -1,6 +1,7 @@
 #ifndef _INTERRUPT_H_
 #define _INTERRUPT_H_
 
+#include "pit.h"
 #include "pic.h"
 #include "memory.h"
 #include "time.h"

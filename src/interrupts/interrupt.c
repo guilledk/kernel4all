@@ -63,8 +63,10 @@ void idt_init(void) {
 	idt_entry_init(45,(u32)irqh_45,0x08,0x8F);
 	idt_entry_init(46,(u32)irqh_46,0x08,0x8F);
 	idt_entry_init(47,(u32)irqh_47,0x08,0x8F);
-
+	
 	pic_remap();
+
+	pit_init();
 
 	idtr.size = (sizeof (struct idt_entry) * 256) - 1;
 	idtr.offset = (u32)&idt;

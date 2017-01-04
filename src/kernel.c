@@ -28,6 +28,8 @@ void kernel_main(multiboot_info_t * mbd) {
 		vga_writeln(rev);
 		
 	}
+	
+	vga_newline();
 
 	struct pci_device dev;
 	pci_get_info(&dev,0,0,0);
