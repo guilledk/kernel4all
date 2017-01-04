@@ -12,9 +12,19 @@ struct rsd_ptr {
 	u8 rev;
 	u32 rsdt_address;
 
-} __attribute__ ((packed));
+} __attribute__((packed));
+
+struct rsd_ptr_v2 {
+	
+	struct rsd_ptr first_part;
+	u32 len;
+	u64 xsdt_addr;
+	u8 xchecksum;
+	u8 reserved[3];
+
+} __attribute__((packed));
 
 u8 acpi_check_rsdp(struct rsd_ptr * rsdp); //1 if valid 0 if not
-struct rsd_ptr * acpi_get_rsdp(void);
+void * acpi_get_rsdp(void);
 
 #endif

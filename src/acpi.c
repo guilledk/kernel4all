@@ -8,14 +8,32 @@ u8 acpi_check_rsdp(struct rsd_ptr * rsdp) {
 
 	if(memcmp((u8*)sig, (u8*)rsdp, 8)) {
 	
-		bptr = (u8*) rsdp;
+		bptr = (u8*)rsdp;
 		for(u8 i = 0; i < sizeof(struct rsd_ptr); i++) {
 			check += *bptr;
 			bptr++;
 		}
 
-		if(!bit(check,0))
-			return 1;
+		if(check == 0) {
+
+			if(rsdp->rev > 0) {
+
+				check = 0;
+				bptr = (u8*)rsdp;
+				for(u8 i = 0; i < sizeof(struct rsd_ptr_v2); i++) {
+					check += *bptr;
+					bptr++;
+				}
+
+				if(check == 0) {
+					return 1;
+				}
+
+			} else {
+				return 1;
+			}
+
+		}
 
 	}
 		
@@ -23,14 +41,14 @@ u8 acpi_check_rsdp(struct rsd_ptr * rsdp) {
 
 }
 
-struct rsd_ptr * acpi_get_rsdp(void) {
+void * acpi_get_rsdp(void) {
 
 	u32 * addr;
 
 	for(addr = (u32*)0x000E0000; (int)addr < 0x00100000; addr += 0x10 / sizeof(addr)) {
 
 		if(acpi_check_rsdp((struct rsd_ptr *)addr))
-			return (struct rsd_ptr *)addr;
+			return (void *)addr;
 
 	}
 
@@ -40,7 +58,7 @@ struct rsd_ptr * acpi_get_rsdp(void) {
 	for(addr = (u32*)edba; (u32)addr < edba + 1024; addr += 0x10 / sizeof(addr)) {
 
 		if(acpi_check_rsdp((struct rsd_ptr *)addr))
-			return (struct rsd_ptr *)addr;
+			return (void *)addr;
 
 	}
 

@@ -19,13 +19,17 @@ void kernel_main(multiboot_info_t * mbd) {
 	get_info(mbd);
 
 	struct rsd_ptr * rsdp = acpi_get_rsdp();
-	const char * buf = "RSD PTR ";
-	if(memcmp((u8*)buf,rsdp->signature,8)){
+	if(rsdp != 0){
 		vga_writeln("Root System Description Pointer Found!");
 		char rev[8];
 		itoa(rev,rsdp->rev,10);
 		vga_write("\trev: ");
 		vga_writeln(rev);
+		if(rsdp->rev > 0) {
+			itoa(rev,((struct rsd_ptr_v2 *)rsdp)->len,10);
+			vga_write("\tRSDT len: ");
+			vga_writeln(rev);
+		}
 		
 	}
 	
