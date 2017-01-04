@@ -2,6 +2,7 @@
 #include "grubinfo.h"
 #include "pci.h"
 #include "acpi.h"
+#include "keyboard.h"
 
 //Halt And Catch Fire
 void hcf(void) { for(;;); }
@@ -32,12 +33,25 @@ void kernel_main(multiboot_info_t * mbd) {
 		}
 		
 	}
+
+	acpi_print_tables((struct rsd_table *)rsdp->rsdt_address);
 	
 	vga_newline();
 
-	struct pci_device dev;
-	pci_get_info(&dev,0,0,0);
-	pci_print(&dev);
+	vga_writeln("Scanning PCI devices");
+
+	struct pci_device pdev;
+	
+	for(u16 bus = 0; bus < 256; bus++) {
+		for(u8 dev = 0; dev < 32; dev++) {
+			pci_get_info(&pdev,bus,0,dev);
+			if(pdev.vendorID != 0xFFFF) {
+				pci_print(&pdev);
+			}	
+		}
+	}
+
+	kb_init();
 
 	hcf();
 

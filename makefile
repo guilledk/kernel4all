@@ -48,8 +48,8 @@ geniso: link
 
 genusb: geniso
 	cp grub/grub.cfg iso/boot/grub
-	grub-mkrescue -o "$(NAME)-v$(VERSION)-USB.iso" iso
+	grub-mkrescue -o "$(NAME)-v$(VERSION).iso" iso
 	
 
-run: geniso
-	qemu-system-i386 -cdrom "$(NAME)-v$(VERSION).iso"
+run: genusb
+	qemu-system-i386 --cdrom "$(NAME)-v$(VERSION).iso"

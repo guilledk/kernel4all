@@ -58,6 +58,16 @@ void pci_get_info(struct pci_device * dev, u8 bus, u8 func, u8 slot) {
 
 	reg = pci_cfg_read_reg(bus,slot,func,0x10);
 	dev->bar0 = reg;
+	reg = pci_cfg_read_reg(bus,slot,func,0x14);
+	dev->bar1 = reg;
+	reg = pci_cfg_read_reg(bus,slot,func,0x18);
+	dev->bar2 = reg;
+	reg = pci_cfg_read_reg(bus,slot,func,0x1C);
+	dev->bar3 = reg;
+	reg = pci_cfg_read_reg(bus,slot,func,0x20);
+	dev->bar4 = reg;
+	reg = pci_cfg_read_reg(bus,slot,func,0x24);
+	dev->bar5 = reg;
 
 	reg = pci_cfg_read_reg(bus,slot,func,0x0C);
 	dev->header_type =     (reg & 0x00FF0000) >> 16;
@@ -67,32 +77,10 @@ void pci_get_info(struct pci_device * dev, u8 bus, u8 func, u8 slot) {
 
 void pci_print(struct pci_device * dev) {
 
-	char buf[8];
-	itoa(buf,dev->vendorID,10);
-	vga_write("pci device:\n\tvendor: ");
-	vga_writeln(buf);
-	itoa(buf,dev->deviceID,10);
-	vga_write("\tdevice: ");
-	vga_writeln(buf);
-	itoa(buf,dev->bar0,10);
-	vga_write("\tBAR0: ");
-	vga_writeln(buf);
-	itoa(buf,dev->revisionID,10);
-	vga_write("\trev ");
-	vga_writeln(buf);
-	itoa(buf,dev->header_type,10);
-	vga_write("\thtype ");
-	vga_writeln(buf);
-	vga_write("\tclass: ");
-	if(dev->class_code < 0x12) {
-		vga_writeln(CLASS_CODES[dev->class_code]);
-	} else {
-		if(dev->class_code == 0xFF) {
-			vga_writeln(CLASS_CODES[19]);
-		} else {
-			vga_writeln(CLASS_CODES[18]);
-		}
-	}
-	
+	vga_write("pci: ");
+	vga_writehex(dev->vendorID,0);
+	vga_write(":");
+	vga_writehex(dev->deviceID,0);
+	vga_newline();
 
 }

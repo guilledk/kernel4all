@@ -45,6 +45,8 @@ void vga_clear(void);
 void vga_putat(u16 entry, u8 x, u8 y);
 void vga_write(const char * str);
 void vga_writeln(const char * str);
+void vga_writeuint(u32 num);
+void vga_writehex(u32 num, u8 upper);
 void vga_newline(void);
 
 void vga_splash(u8 x, u8 y);

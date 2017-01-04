@@ -99,6 +99,59 @@ void vga_writeln(const char * str) {
 	vga_newline();
 }
 
+void vga_writeuint(u32 num) {
+
+	u32 og = num;
+	u32 num_of_digits = 1;
+	while(num /= 10) num_of_digits++;
+	num = og;
+
+	char number[num_of_digits + 1];
+	for(i8 i = num_of_digits - 1; i >= 0; i--) {
+		number[i] = 48 + (num % 10);
+		num /= 10;
+	}
+	number[num_of_digits] = 0;
+
+	vga_write((char*)number);
+}
+
+void vga_writehex(u32 num, u8 upper) {
+
+	u8 hex_digits[8]; 
+	hex_digits[0] = (num & 0x0000000F);
+	hex_digits[1] = (num & 0x000000F0) >> 4;
+	hex_digits[2] = (num & 0x00000F00) >> 8;
+	hex_digits[3] = (num & 0x0000F000) >> 12;
+	hex_digits[4] = (num & 0x000F0000) >> 16;
+	hex_digits[5] = (num & 0x00F00000) >> 20;
+	hex_digits[6] = (num & 0x0F000000) >> 24;
+	hex_digits[7] = (num & 0xF0000000) >> 28;
+
+	u8 offset = 0;
+	if(!upper)
+		offset = 32;
+
+	u8 found_digit = 0;
+
+	for(i8 i = 7; i >= 0; i--) {
+
+		if(!found_digit && hex_digits[i] == 0 && i != 0)
+			continue;
+
+		found_digit = 1;
+		if(hex_digits[i] < 0xA) {
+			char digit[2] = { 48 + hex_digits[i], 0 };
+			vga_write(digit);
+			continue;
+		}
+		char digit[2] = { 65 + (hex_digits[i] - 0xA) + offset, 0 };
+		vga_write(digit);
+
+	}	
+
+}
+
 void vga_newline(void) {
 
 	vga_x = 0;

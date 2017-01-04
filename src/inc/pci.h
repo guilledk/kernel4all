@@ -15,6 +15,11 @@ struct pci_device {
 	u16 command;
 
 	u32 bar0;
+	u32 bar1;
+	u32 bar2;
+	u32 bar3;
+	u32 bar4;
+	u32 bar5;
 	
 	u8 class_code;
 	u8 revisionID;

@@ -6,6 +6,7 @@
 #include "memory.h"
 #include "time.h"
 #include "vga.h"
+#include "keyboard.h"
 
 struct idt_entry {
 
