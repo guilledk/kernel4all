@@ -10,6 +10,14 @@ const char * commands[SHELL_CMD_COUNT] = {
 
 };
 
+const u8 cmd_lenghts[SHELL_CMD_COUNT] = {
+	
+	4,
+	5,
+	5
+
+};
+
 void shell_in(char c) {
 	if(current_len == 255)
 		return;
@@ -18,6 +26,7 @@ void shell_in(char c) {
 		case '\b' : {
 			if(current_len == 0)
 				return;
+			*(current_str + current_len) = 0;
 			current_len--;
 			vga_backspace();
 			break;
@@ -30,6 +39,7 @@ void shell_in(char c) {
 		}
 		default : {
 			*(current_str + current_len) = c;
+			*(current_str + current_len + 1) = 0;
 			current_len++;
 			vga_writechar(c);
 			break;
@@ -43,7 +53,10 @@ void shell_prompt(void) {
 }
 
 void shell_exec(void) {
-	vga_writeln("OK.");
+	vga_write("\"");
+	vga_write(current_str);
+	vga_write("\"\n");
+	
 	shell_prompt();
 }
 
@@ -52,6 +65,7 @@ void shell_init(void) {
 	inchar = shell_in;
 
 	current_str = SHELL_CSTR_ADDR;
+	*current_str = 0;
 	current_len = 0;
 
 	shell_prompt();

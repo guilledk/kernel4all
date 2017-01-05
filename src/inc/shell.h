@@ -12,6 +12,7 @@
 
 extern const char * prompt;
 extern const char * commands[SHELL_CMD_COUNT];
+extern const u8 cmd_lenghts[SHELL_CMD_COUNT];
 
 char * current_str;
 u8 current_len;
