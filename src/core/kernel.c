@@ -1,6 +1,7 @@
 #include "interrupts/interrupt.h"
 #include "hardware/grubinfo.h"
 #include "hardware/acpi.h"
+#include "hardware/pci.h"
 #include "shell/shell.h"
 
 //Halt And Catch Fire
@@ -42,7 +43,7 @@ void kernel_main(multiboot_info_t * mbd) {
 	paging_init();
 
 	vga_write("kernel size in memory: ");
-	vga_writeuint((u32)&kernel_end_addr - 0xF4240);
+	vga_writeuint((u32)&kernel_end_addr - 0xF4240,0);
 	vga_write(" bytes.\n");
 
 	shell_init();

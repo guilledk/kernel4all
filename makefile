@@ -17,9 +17,9 @@ AFLAGS = -f elf32
 default: run
 
 build:
-	mkdir out/core
-	mkdir out/hardware
-	mkdir out/interrupts
+	mkdir -p out/core
+	mkdir -p out/hardware
+	mkdir -p out/interrupts
 	mkdir -p out/shell/programs
 	$(foreach SRC, $(CSRC), $(GCC) $(CFLAGS) -c $(SRC) -o $(SRC:src/%.c=out/%.o);)
 	$(foreach SRC, $(ASRC), $(ASM) $(AFLAGS) $(SRC) -o $(SRC:src/%.asm=out/%.o);)

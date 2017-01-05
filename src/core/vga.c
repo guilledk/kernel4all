@@ -130,7 +130,7 @@ void vga_writeln(const char * str) {
 	vga_newline();
 }
 
-void vga_writeuint(u32 num) {
+void vga_writeuint(u32 num, u8 pad) {
 
 	u32 og = num;
 	u32 num_of_digits = 1;
@@ -143,6 +143,12 @@ void vga_writeuint(u32 num) {
 		num /= 10;
 	}
 	number[num_of_digits] = 0;
+
+	if(num_of_digits < pad) {
+		for(u8 i = 0; i < pad - num_of_digits; i++) {
+			vga_writechar('0');
+		}
+	}
 
 	vga_write((char*)number);
 }
