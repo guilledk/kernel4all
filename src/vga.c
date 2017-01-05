@@ -68,6 +68,20 @@ void vga_putat(u16 entry, u8 x, u8 y) {
 
 }
 
+void vga_backspace(void) {
+	
+	if(vga_x == 0) {
+		if(vga_y == 0)
+			return;
+		vga_x = VGA_WIDTH - 1;
+		vga_y--;
+	} else {
+		vga_x--;	
+	}
+	vga_putat(vga_empty,vga_x,vga_y);
+
+}
+
 void vga_write(const char * str) {
 
 	while(*str) {
@@ -92,6 +106,23 @@ void vga_write(const char * str) {
 		str++;
 	}
 
+}
+
+void vga_writechar(char c) {
+	if(c == '\n') {
+		vga_newline();
+	}
+	if(c == '\t') {
+		u8 n = VGA_TAB_SIZE;
+		while(n--) {
+			vga_putat(vga_entry(' ', vga_color),vga_x,vga_y);
+			vga_x++;
+		}
+	}
+	u16 entry = vga_entry(c,vga_color);
+	vga_putat(entry, vga_x, vga_y);
+	if(++vga_x == VGA_WIDTH)
+		vga_newline();
 }
 
 void vga_writeln(const char * str) {

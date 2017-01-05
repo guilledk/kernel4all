@@ -43,7 +43,9 @@ u16 vga_entry(u8 uchar, u8 ecolor);
 
 void vga_clear(void);
 void vga_putat(u16 entry, u8 x, u8 y);
+void vga_backspace(void);
 void vga_write(const char * str);
+void vga_writechar(char c);
 void vga_writeln(const char * str);
 void vga_writeuint(u32 num);
 void vga_writehex(u32 num, u8 upper);
