@@ -5,6 +5,7 @@ const char * prompt = "-> ";
 const char * commands[SHELL_CMD_COUNT] = {
 
 	"help",
+	"clear",
 	"boski",
 	"lspci"
 
@@ -14,12 +15,13 @@ const u8 cmd_lenghts[SHELL_CMD_COUNT] = {
 	
 	4,
 	5,
+	5,
 	5
 
 };
 
 void shell_in(char c) {
-	if(current_len == 255)
+	if(current_len == SHELL_CSTR_MAXS - 1 && c != '\b' && c != '\n')
 		return;
 
 	switch(c) {
@@ -53,9 +55,21 @@ void shell_prompt(void) {
 }
 
 void shell_exec(void) {
-	vga_write("\"");
-	vga_write(current_str);
-	vga_write("\"\n");
+	
+	u8 found = 0;
+	for(u8 i = 0; i < SHELL_CMD_COUNT; i++) {
+		if(current_len == cmd_lenghts[i]) {
+			if(memcmp(current_str,commands[i],current_len)) {
+				found = 1;
+				vga_writeln("Command found!");
+			}
+		}
+	}
+	if(!found)
+		vga_writeln("Command not found! try \"help\".");
+
+	*current_str = 0;
+	current_len = 0;
 	
 	shell_prompt();
 }

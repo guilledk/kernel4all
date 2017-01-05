@@ -4,11 +4,13 @@
 #include "types.h"
 #include "keyboard.h"
 #include "vga.h"
+#include "string.h"
+#include "memory.h"
 
 #define SHELL_CSTR_ADDR 0x0;
 #define SHELL_CSTR_MAXS 256; 
 
-#define SHELL_CMD_COUNT 3
+#define SHELL_CMD_COUNT 4
 
 extern const char * prompt;
 extern const char * commands[SHELL_CMD_COUNT];
