@@ -1,7 +1,7 @@
 #ifndef _CASM_H_
 #define _CASM_H_
 
-#include "types.h"
+#include "core/types.h"
 
 struct cpu_state { //128 bit(16 byte) structure, cpu regs
 

@@ -1,4 +1,4 @@
-#include "pit.h"
+#include "interrupts/pit.h"
 
 void pit_init(void) {
 

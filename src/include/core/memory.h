@@ -1,8 +1,8 @@
 #ifndef _MEMORY_H_
 #define _MEMORY_H_
 
-#include "types.h"
-#include "casm.h"
+#include "core/types.h"
+#include "core/casm.h"
 
 extern u32 kernel_end_addr;
 

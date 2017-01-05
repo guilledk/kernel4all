@@ -1,7 +1,7 @@
 #ifndef _TIME_H_
 #define _TIME_H_
 
-#include "types.h"
+#include "core/types.h"
 
 /*
  * Right now the PIT is hardcoded to run at 100hz

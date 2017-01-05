@@ -1,4 +1,4 @@
-#include "pic.h"
+#include "interrupts/pic.h"
 
 void pic_acknowledge(u32 interrupt) {
 

@@ -1,7 +1,7 @@
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_
 
-#include "types.h"
+#include "core/types.h"
 
 #define KB_ENABLED 0x01
 #define KB_INITZED 0x02

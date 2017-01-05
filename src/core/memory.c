@@ -1,4 +1,4 @@
-#include "memory.h"
+#include "core/memory.h"
 
 void paging_init(void) {
 

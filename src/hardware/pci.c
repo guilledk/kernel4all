@@ -1,4 +1,4 @@
-#include "pci.h"
+#include "hardware/pci.h"
 
 const char * CLASS_CODES[20] = {
 

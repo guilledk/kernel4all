@@ -1,4 +1,4 @@
-#include "interrupt.h"
+#include "interrupts/interrupt.h"
 
 void idt_entry_init(u8 index, u32 offset, u16 selector, u8 flags) {
 

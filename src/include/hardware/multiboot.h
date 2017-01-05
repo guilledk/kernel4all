@@ -71,7 +71,7 @@
      
      #ifndef ASM_FILE
 
-	#include "types.h"
+	#include "core/types.h"
      
      struct multiboot_header
      {

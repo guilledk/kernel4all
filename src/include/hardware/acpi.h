@@ -1,9 +1,9 @@
 #ifndef _ACPI_H_
 #define _ACPI_H_
 
-#include "types.h"
-#include "memory.h"
-#include "vga.h"
+#include "core/types.h"
+#include "core/memory.h"
+#include "core/vga.h"
 
 struct rsd_ptr {
 

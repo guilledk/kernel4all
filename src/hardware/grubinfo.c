@@ -1,4 +1,4 @@
-#include "grubinfo.h"
+#include "hardware/grubinfo.h"
 
 void get_info(multiboot_info_t * mbd) {
 	vga_write("Booted by: ");

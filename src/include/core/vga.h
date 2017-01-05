@@ -1,9 +1,9 @@
 #ifndef _VGA_H_
 #define _VGA_H_
 
-#include "types.h"
-#include "casm.h"
-#include "string.h"
+#include "core/types.h"
+#include "core/casm.h"
+#include "core/string.h"
 
 typedef enum vga_color {
 

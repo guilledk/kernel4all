@@ -1,7 +1,7 @@
 NAME = kernel4all
 VERSION = 1
 OUT = k4a.elf
-INC = src/inc/
+INC = src/include/
 GCC = i686-elf-gcc
 ASM = nasm
 LDF = link.ld
@@ -15,16 +15,19 @@ LFLAGS = -melf_i386
 AFLAGS = -f elf32
 
 default: run
-	
 
 build:
+	mkdir out/core
+	mkdir out/hardware
+	mkdir out/interrupts
+	mkdir -p out/shell/programs
 	$(foreach SRC, $(CSRC), $(GCC) $(CFLAGS) -c $(SRC) -o $(SRC:src/%.c=out/%.o);)
 	$(foreach SRC, $(ASRC), $(ASM) $(AFLAGS) $(SRC) -o $(SRC:src/%.asm=out/%.o);)
 
 .PHONY: clean link run default geniso genusb
 
 clean:
-	rm -f out/*.o $(OUT)
+	rm -rdf out/* $(OUT)
 	rm -rdf iso
 
 link: build

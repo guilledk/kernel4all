@@ -1,12 +1,13 @@
 #ifndef _INTERRUPT_H_
 #define _INTERRUPT_H_
 
-#include "pit.h"
-#include "pic.h"
-#include "memory.h"
-#include "time.h"
-#include "vga.h"
-#include "keyboard.h"
+#include "interrupts/pit.h"
+#include "interrupts/pic.h"
+#include "interrupts/keyboard.h"
+
+#include "core/memory.h"
+#include "core/time.h"
+#include "core/vga.h"
 
 struct idt_entry {
 

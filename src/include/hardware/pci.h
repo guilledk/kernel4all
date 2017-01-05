@@ -1,9 +1,9 @@
 #ifndef _PCI_H_
 #define _PCI_H_
 
-#include "casm.h"
-#include "string.h"
-#include "vga.h"
+#include "core/casm.h"
+#include "core/string.h"
+#include "core/vga.h"
 
 extern const char * CLASS_CODES[20];
 

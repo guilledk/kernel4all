@@ -1,4 +1,4 @@
-#include "acpi.h"
+#include "hardware/acpi.h"
 
 u8 acpi_check_rsdp(struct rsd_ptr * rsdp) { //TODO: the if tree can be improved 
 

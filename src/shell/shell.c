@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "shell/shell.h"
 
 const char * prompt = "-> ";
 
@@ -19,6 +19,18 @@ const u8 cmd_lenghts[SHELL_CMD_COUNT] = {
 	5
 
 };
+
+void (*entry_points[SHELL_CMD_COUNT])(void) = {
+
+	0, 0, 0, 0
+
+};
+
+void shell_register_cmd(void (*entry_point)(void), u8 index) {
+
+	entry_points[index] = entry_point;
+
+}
 
 void shell_in(char c) {
 	if(current_len == SHELL_CSTR_MAXS - 1 && c != '\b' && c != '\n')
@@ -59,9 +71,11 @@ void shell_exec(void) {
 	u8 found = 0;
 	for(u8 i = 0; i < SHELL_CMD_COUNT; i++) {
 		if(current_len == cmd_lenghts[i]) {
-			if(memcmp(current_str,commands[i],current_len)) {
+			if(memcmp((u8*)current_str,(u8*)commands[i],current_len)) {
 				found = 1;
-				vga_writeln("Command found!");
+				if(entry_points[i]) {
+					(*entry_points[i])();
+				}
 			}
 		}
 	}
@@ -81,6 +95,11 @@ void shell_init(void) {
 	current_str = SHELL_CSTR_ADDR;
 	*current_str = 0;
 	current_len = 0;
+
+	shell_register_cmd(help_main, 0);
+	shell_register_cmd(vga_clear, 1);
+	shell_register_cmd(boski_main,2);
+	shell_register_cmd(lspci_main,3);
 
 	shell_prompt();
 
