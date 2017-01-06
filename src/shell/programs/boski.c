@@ -3,7 +3,7 @@
 
 const char * msg = "BOSKI MANNN SALIII DE LA FALOOPAA GILAAA";
 
-void boski_main(void) {
+u8 boski_main(void) {
 
 	u8 tmp = vga_color;
 
@@ -20,5 +20,6 @@ void boski_main(void) {
 	vga_newline();
 
 	vga_color = tmp;
+	return 1;
 
 }

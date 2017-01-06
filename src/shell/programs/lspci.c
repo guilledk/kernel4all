@@ -2,7 +2,7 @@
 #include "hardware/pci.h"
 #include "core/time.h"
 
-void lspci_main(void) {
+u8 lspci_main(void) {
 
 	vga_writeln("Scanning PCI devices");
 
@@ -42,5 +42,6 @@ void lspci_main(void) {
 	vga_write("Done in ");
 	vga_writeuint(elapsed,0);
 	vga_writeln(" ms.");
+	return 1;
 
 }

@@ -7,7 +7,8 @@ const char * commands[SHELL_CMD_COUNT] = {
 	"help",
 	"clear",
 	"boski",
-	"lspci"
+	"lspci",
+	"intest",
 
 };
 
@@ -16,20 +17,31 @@ const u8 cmd_lenghts[SHELL_CMD_COUNT] = {
 	4,
 	5,
 	5,
-	5
+	5,
+	6
 
 };
 
-void (*entry_points[SHELL_CMD_COUNT])(void) = {
+u8 (*entry_points[SHELL_CMD_COUNT])(void) = {
 
-	0, 0, 0, 0
+	0, 0, 0, 0, 0
 
 };
 
-void shell_register_cmd(void (*entry_point)(void), u8 index) {
+void shell_register_cmd(u8 (*entry_point)(void), u8 index) {
 
 	entry_points[index] = entry_point;
 
+}
+
+void (*input_request_cb)(void);
+
+void shell_input(void (*callback)(void)) {
+	requested_input = 1;
+	*current_str = 0;
+	current_len = 0;
+	input_request_cb = callback;
+	kb_set_enabled(1);
 }
 
 void shell_in(char c) {
@@ -48,7 +60,13 @@ void shell_in(char c) {
 		case '\n' : {
 			kb_set_enabled(0);
 			vga_newline();
-			shell_exec();
+			if(!requested_input) {
+				shell_exec();
+			} else {
+				requested_input = 0;
+				input_request_cb();
+				shell_prompt();
+			}
 			break;
 		}
 		default : {
@@ -62,6 +80,8 @@ void shell_in(char c) {
 }
 
 void shell_prompt(void) {
+	*current_str = 0;
+	current_len = 0;
 	vga_write(prompt);
 	kb_set_enabled(1);
 }
@@ -74,17 +94,19 @@ void shell_exec(void) {
 			if(memcmp((u8*)current_str,(u8*)commands[i],current_len)) {
 				found = 1;
 				if(entry_points[i]) {
-					(*entry_points[i])();
+					ended = (*entry_points[i])();
+					break;
 				}
 			}
 		}
 	}
+
+	if(!ended)
+		return;
+
 	if(!found)
 		vga_writeln("Command not found! try \"help\".");
 
-	*current_str = 0;
-	current_len = 0;
-	
 	shell_prompt();
 }
 
@@ -95,11 +117,13 @@ void shell_init(void) {
 	current_str = SHELL_CSTR_ADDR;
 	*current_str = 0;
 	current_len = 0;
+	requested_input = 0;
 
 	shell_register_cmd(help_main, 0);
-	shell_register_cmd(vga_clear, 1);
+	shell_register_cmd(clear_main, 1);
 	shell_register_cmd(boski_main,2);
 	shell_register_cmd(lspci_main,3);
+	shell_register_cmd(intest_main,4);
 
 	shell_prompt();
 
