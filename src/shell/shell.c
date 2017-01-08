@@ -34,16 +34,6 @@ void shell_register_cmd(u8 (*entry_point)(void), u8 index) {
 
 }
 
-void (*input_request_cb)(void);
-
-void shell_input(void (*callback)(void)) {
-	requested_input = 1;
-	*current_str = 0;
-	current_len = 0;
-	input_request_cb = callback;
-	kb_set_enabled(1);
-}
-
 void shell_in(char c) {
 	if(current_len == SHELL_CSTR_MAXS - 1 && c != '\b' && c != '\n')
 		return;
@@ -60,13 +50,7 @@ void shell_in(char c) {
 		case '\n' : {
 			kb_set_enabled(0);
 			vga_newline();
-			if(!requested_input) {
-				shell_exec();
-			} else {
-				requested_input = 0;
-				input_request_cb();
-				shell_prompt();
-			}
+			shell_exec();
 			break;
 		}
 		default : {
@@ -80,6 +64,7 @@ void shell_in(char c) {
 }
 
 void shell_prompt(void) {
+	inchar = shell_in;
 	*current_str = 0;
 	current_len = 0;
 	vga_write(prompt);
@@ -94,30 +79,26 @@ void shell_exec(void) {
 			if(memcmp((u8*)current_str,(u8*)commands[i],current_len)) {
 				found = 1;
 				if(entry_points[i]) {
-					ended = (*entry_points[i])();
+					return_code = (*entry_points[i])();
 					break;
 				}
 			}
 		}
 	}
 
-	if(!ended)
-		return;
+	if(return_code) {
 
-	if(!found)
-		vga_writeln("Command not found! try \"help\".");
+		if(!found)
+			vga_writeln("Command not found! try \"help\".");
 
-	shell_prompt();
+		shell_prompt();
+
+	}
 }
 
 void shell_init(void) {
-	
-	inchar = shell_in;
 
 	current_str = SHELL_CSTR_ADDR;
-	*current_str = 0;
-	current_len = 0;
-	requested_input = 0;
 
 	shell_register_cmd(help_main, 0);
 	shell_register_cmd(clear_main, 1);

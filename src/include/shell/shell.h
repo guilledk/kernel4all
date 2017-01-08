@@ -13,14 +13,16 @@
 
 #define SHELL_CMD_COUNT 5
 
+#define PROG_CSTR_ADDR  (SHELL_CSTR_ADDR + SHELL_CSTR_MAXS)
+#define PROG_CSTR_MAXS  256
+
 extern const char * prompt;
 extern const char * commands[SHELL_CMD_COUNT];
 extern const u8 cmd_lenghts[SHELL_CMD_COUNT];
 
 char * current_str;
 u8 current_len;
-u8 ended;
-u8 requested_input;
+u8 return_code;
 
 void shell_register_cmd(u8 (*entry_point)(void), u8 index);
 void shell_input(void (*callback)(void));

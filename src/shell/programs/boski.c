@@ -1,7 +1,7 @@
 #include "shell/shell.h"
 #include "core/time.h"
 
-const char * msg = "BOSKI MANNN SALIII DE LA FALOOPAA GILAAA";
+const char * msg = "SALI DE LA FALOPA GILAAAA";
 
 u8 boski_main(void) {
 
