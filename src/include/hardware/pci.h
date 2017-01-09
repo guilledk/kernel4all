@@ -59,6 +59,17 @@
 #define PCI_BAR_64                      0x04
 #define PCI_BAR_PREFETCH                0x08
 
+struct pci_bar {
+
+	union {
+		void * addr;
+		u16 port;
+	} u;
+	u64 size;
+	u32 flags;
+
+};
+
 struct pci_device_info {
 
 	u16 vendorID;
@@ -84,6 +95,7 @@ void pci_outw(u32 id, u16 reg, u16 data);
 void pci_outd(u32 id, u16 reg, u32 data);
 
 void pci_get_info(struct pci_device_info * pdev, u8 bus, u8 dev, u8 func);
+void pci_get_bar(struct pci_bar * bar, u32 id, u8 index);
 void pci_print(struct pci_device_info * pdev, u8 bus, u8 dev, u8 func);
 
 #endif

@@ -74,6 +74,55 @@ void pci_get_info(struct pci_device_info * pdev, u8 bus, u8 dev, u8 func) {
 
 }
 
+static void pci_read_bar(u32 id, u8 index, u32 * addr, u32 * mask) {
+
+	u32 reg = PCI_CONFIG_BAR0 + index * sizeof(u32);
+	*addr = pci_ind(id, reg);
+	
+	pci_outd(id, reg, 0xFFFFFFFF);
+	*mask = pci_ind(id, reg);
+	
+	pci_outd(id, reg, *addr);
+
+}
+
+void pci_get_bar(struct pci_bar * bar, u32 id, u8 index) {
+
+	u32 addr_low;
+	u32 mask_low;
+	
+	pci_read_bar(id, index, &addr_low, &mask_low);
+
+	if(addr_low & PCI_BAR_64) {
+
+		// 64-bit mmio
+		u32 addr_high;
+		u32 mask_high;
+
+		pci_read_bar(id, index + 1, &addr_high, &mask_high);
+
+		bar->u.addr = (void*)(((u64)addr_high << 32) | (addr_low & ~0xF));
+		bar->size = ~(((u64)mask_high << 32) | (mask_low & ~0xF)) + 1;
+		bar->flags = addr_low & 0xF;
+
+	} else if(addr_low & PCI_BAR_IO) {
+
+		// I/O port
+		bar->u.port = (u16)(addr_low & ~0x3);
+		bar->size = (u16)(~(mask_low & ~0x3) + 1);
+		bar->flags = addr_low & 0x3;
+
+	} else {
+		
+		// 32-bit mmio
+		bar->u.addr = (void *)(u64)(addr_low & ~0xF);
+		bar->size = ~(mask_low & ~0xF) + 1;
+		bar->flags = addr_low & 0xF;
+
+	}
+
+}
+
 void pci_print(struct pci_device_info * pdev, u8 bus, u8 dev, u8 func) {
 
 	vga_write("(");

@@ -86,7 +86,7 @@ void shell_exec(void) {
 		}
 	}
 
-	if(return_code) {
+	if(return_code || !found) {
 
 		if(!found)
 			vga_writeln("Command not found! try \"help\".");

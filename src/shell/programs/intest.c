@@ -36,7 +36,7 @@ void input(char c) {
 u8 intest_main(void) {
 
 	clen = 0;
-	str = PROG_CSTR_ADDR;
+	str = (char *)PROG_CSTR_ADDR;
 	vga_write("input: ");
 	inchar = input;
 	kb_set_enabled(1);

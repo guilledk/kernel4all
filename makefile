@@ -18,7 +18,7 @@ default: run
 
 build:
 	mkdir -p out/core
-	mkdir -p out/hardware
+	mkdir -p out/hardware/usb
 	mkdir -p out/interrupts
 	mkdir -p out/shell/programs
 	$(foreach SRC, $(CSRC), $(GCC) $(CFLAGS) -c $(SRC) -o $(SRC:src/%.c=out/%.o);)
